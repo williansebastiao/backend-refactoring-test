@@ -1,7 +1,5 @@
 install: api-env api-composer-install api-build api-db api-key api-passport-genereate
 
-build:
-	USER_ID=$(shell id -u) GROUP_ID=$(shell id -g) docker-compose build --no-cache
 
 ps:
 	docker-compose ps
@@ -21,6 +19,9 @@ forget:
 
 db-shell:
 	mysql -h 127.0.0.1 -P 3306 -u sail -ppassword
+
+api-build:
+	USER_ID=$(shell id -u) GROUP_ID=$(shell id -g) docker-compose build --no-cache
 
 api-db:
 	docker-compose exec -it api php /var/www/html/artisan migrate:fresh
