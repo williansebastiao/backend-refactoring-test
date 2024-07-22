@@ -1,4 +1,7 @@
-install: api-env api-composer-install api-build up api-db api-key api-passport-genereate
+install: api-env api-composer-install api-build up sleep api-db api-key api-passport-key api-passport-generate
+
+sleep:
+	sleep 3
 
 ps:
 	docker-compose ps
@@ -56,7 +59,12 @@ api-test-php-unit:
 api-build-swagger:
 	docker-compose exec -it api php /var/www/html/artisan l5-swagger:generate
 
+api-passport-key:
+	docker-compose exec -it api php /var/www/html/artisan  passport:keys --force
+
 api-passport-generate:
 	docker-compose exec -it api php /var/www/html/artisan passport:client --password --name='Laravel Password Grant Client' --provider=users > .passport
 	cat .passport
 
+fix-permissions:
+	docker-compose exec -it api bash -c 'chmod -R 777 /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage/framework'
