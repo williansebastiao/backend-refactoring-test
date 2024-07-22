@@ -1,5 +1,4 @@
-install: api-env api-composer-install api-build api-db api-key api-passport-genereate
-
+install: api-env api-composer-install api-build up api-db api-key api-passport-genereate
 
 ps:
 	docker-compose ps
