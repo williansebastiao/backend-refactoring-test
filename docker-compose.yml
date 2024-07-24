@@ -4,7 +4,7 @@ services:
         container_name: nginx-eleven
         build: infrastructure/nginx
         ports:
-            - 8000:80
+            - "${APP_NGINX_PORT:-8080}:80"
         volumes:
             - .:/var/www
         depends_on:
@@ -16,7 +16,7 @@ services:
         container_name: php-eleven
         build: infrastructure/php
         ports:
-            - 9000:9000
+            - "${APP_PHP_PORT:-9000}:9000"
         volumes:
             - .:/var/www
         networks:
@@ -35,7 +35,7 @@ services:
         depends_on:
             - php
         ports:
-            - "3307:3306"
+            - "${APP_DB_PORT:-3307}:3306"
         expose:
             - "3307"
         networks:
@@ -53,7 +53,7 @@ services:
         depends_on:
             - db
         ports:
-            - "8001:80"
+            - "${APP_ADMIN_PORT:-8081}:80"
         networks:
             - eleven
 networks:
