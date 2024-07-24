@@ -55,8 +55,11 @@ class UserRepository
      */
     public function update(int $id, array $data): User
     {
-        $user = $this->findById($id);
-        $this->user->find($id)->update($data);
+        $user = $this->user->find($id);
+        if (is_null($user)) {
+            throw new NotFoundHttpException('User not found');
+        }
+        $user->update($data);
         return $user;
     }
 
