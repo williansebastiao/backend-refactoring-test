@@ -21,6 +21,9 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function findAll()
     {
         return $this->userRepository->findAll();
@@ -54,6 +57,10 @@ class UserService
         return $this->userRepository->update($id, $data);
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function destroy(int $id): bool
     {
         return $this->userRepository->destroy($id);
