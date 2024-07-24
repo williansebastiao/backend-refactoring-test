@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\StatusCode;
+use App\Http\Requests\Api\UserRequest;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
+use App\UseCases\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    private User $user;
+    private UserService $userService;
 
-    function __construct(User $user)
+    function __construct(UserService $userService)
     {
-        $this->user = $user;
+        $this->userService = $userService;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse
      *
      * @OA\Get(
      *      path="/users",
@@ -48,15 +54,20 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        return $this->user->get();
+        try {
+            $user = $this->userService->findAll();
+            return response()->json($user, StatusCode::SUCCESS);
+        } catch (\Exception $e) {
+            return response()->json(['detail' => $e->getMessage()], StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * Show a specific user resource
      *
-     * @return User
+     * @return JsonResponse
      *
      * @OA\Get(
      *      path="/users/{id}",
@@ -88,15 +99,20 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function show(User $user)
+    public function show(int $id): JsonResponse
     {
-        return $user;
+        try {
+            $user = $this->userService->findById($id);
+            return response()->json($user, StatusCode::SUCCESS);
+        } catch (\Exception $e) {
+            return response()->json(['detail' => $e->getMessage()], StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * Store a newly created user in storage.
      *
-     * @return User
+     * @return JsonResponse
      *
      * @OA\Post(
      *      path="/users",
@@ -126,21 +142,20 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request): JsonResponse
     {
-        $data = $request->only([
-            'name',
-            'email',
-            'password',
-        ]);
-
-        return $this->user->create($data);
+        try {
+            $user = $this->userService->store($request->validated());
+            return response()->json($user, StatusCode::CREATED);
+        } catch (\Exception $e) {
+            return response()->json(['detail' => $e->getMessage()], StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
      * Update a specific user resource
      *
-     * @return User
+     * @return JsonResponse
      *
      * @OA\Put(
      *      path="/users/{id}",
@@ -176,17 +191,14 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function update(Request $request, User $user)
+    public function update(int $id, UserUpdateRequest $request): JsonResponse
     {
-        $data = $request->only([
-            'name',
-            'email',
-            'password',
-        ]);
-
-        $user->update($data);
-
-        return $user;
+        try {
+            $user = $this->userService->update($id, $request->validated());
+            return response()->json($user, StatusCode::SUCCESS);
+        } catch (\Exception $e) {
+            return response()->json(['detail' => $e->getMessage()], StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -224,11 +236,14 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function destroy(User $user)
+    public function destroy(int $id): JsonResponse
     {
-        $user->delete();
-
-        return $user;
+        try {
+            $this->userService->destroy($id);
+            return response()->json(['detail'=> 'Data deleted'], StatusCode::SUCCESS);
+        } catch (\Exception $e) {
+            return response()->json(['detail' => $e->getMessage()], StatusCode::INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
