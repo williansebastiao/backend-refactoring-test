@@ -13,8 +13,15 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    /**
+     * @var UserService
+     */
     private UserService $userService;
 
+    /**
+     * @param UserService $userService
+     */
     function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -40,13 +47,55 @@ class UserController extends Controller
      *          @OA\JsonContent(
      *              type="array",
      *              @OA\Items(
-     *                  ref="#/components/schemas/User"
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="id",
+     *                      type="integer",
+     *                      example=1
+     *                  ),
+     *                  @OA\Property(
+     *                      property="name",
+     *                      type="string",
+     *                      example="John Doe"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string",
+     *                      format="email",
+     *                      example="john.doe@example.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email_verified_at",
+     *                      type="string",
+     *                      format="date-time",
+     *                      nullable=true,
+     *                      example=null
+     *                  ),
+     *                  @OA\Property(
+     *                      property="created_at",
+     *                      type="string",
+     *                      format="date-time",
+     *                      example="2024-07-24T15:53:32.000000Z"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="updated_at",
+     *                      type="string",
+     *                      format="date-time",
+     *                      example="2024-07-24T16:51:39.000000Z"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="deleted_at",
+     *                      type="string",
+     *                      format="date-time",
+     *                      nullable=true,
+     *                      example=null
+     *                  )
      *              )
-     *          ),
+     *          )
      *      ),
      *      @OA\Response(
      *          response=401,
-     *          description="Unauthenticated",
+     *          description="Unauthenticated"
      *      ),
      *      @OA\Response(
      *          response=403,
@@ -83,15 +132,60 @@ class UserController extends Controller
      *          description="User ID",
      *          required=true,
      *          in="path",
+     *          @OA\Schema(type="integer")
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/User")
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="id",
+     *                  type="integer",
+     *                  example=1
+     *              ),
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string",
+     *                  example="John Doe"
+     *              ),
+     *              @OA\Property(
+     *                  property="email",
+     *                  type="string",
+     *                  format="email",
+     *                  example="john.doe@example.com"
+     *              ),
+     *              @OA\Property(
+     *                  property="email_verified_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  nullable=true,
+     *                  example=null
+     *              ),
+     *              @OA\Property(
+     *                  property="created_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2024-07-24T15:53:32.000000Z"
+     *              ),
+     *              @OA\Property(
+     *                  property="updated_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2024-07-24T16:51:39.000000Z"
+     *              ),
+     *              @OA\Property(
+     *                  property="deleted_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  nullable=true,
+     *                  example=null
+     *              )
+     *          )
      *      ),
      *      @OA\Response(
      *          response=401,
-     *          description="Unauthenticated",
+     *          description="Unauthenticated"
      *      ),
      *      @OA\Response(
      *          response=403,
@@ -125,12 +219,61 @@ class UserController extends Controller
      *      },
      *      @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/User")
+     *          @OA\JsonContent(
+     *              type="object",
+     *              required={"name", "email", "password"},
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string",
+     *                  example="John Doe"
+     *              ),
+     *              @OA\Property(
+     *                  property="email",
+     *                  type="string",
+     *                  format="email",
+     *                  example="john.doe@example.com"
+     *              ),
+     *              @OA\Property(
+     *                  property="password",
+     *                  type="string",
+     *                  example="secret"
+     *              )
+     *          )
      *      ),
      *      @OA\Response(
-     *          response=200,
+     *          response=201,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/User")
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="id",
+     *                  type="integer",
+     *                  example=1
+     *              ),
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string",
+     *                  example="John Doe"
+     *              ),
+     *              @OA\Property(
+     *                  property="email",
+     *                  type="string",
+     *                  format="email",
+     *                  example="john.doe@example.com"
+     *              ),
+     *              @OA\Property(
+     *                  property="created_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2024-07-24T15:53:32.000000Z"
+     *              ),
+     *              @OA\Property(
+     *                  property="updated_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2024-07-24T16:51:39.000000Z"
+     *              ),
+     *          )
      *      ),
      *      @OA\Response(
      *          response=401,
@@ -174,12 +317,75 @@ class UserController extends Controller
      *      ),
      *      @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/User")
+     *          @OA\JsonContent(
+     *              type="object",
+     *              required={"name", "email", "password"},
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string",
+     *                  example="John Doe"
+     *              ),
+     *              @OA\Property(
+     *                  property="email",
+     *                  type="string",
+     *                  format="email",
+     *                  example="john.doe@example.com"
+     *              ),
+     *              @OA\Property(
+     *                  property="password",
+     *                  type="string",
+     *                  example="secret"
+     *              )
+     *          )
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/User")
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="id",
+     *                  type="integer",
+     *                  example=1
+     *              ),
+     *              @OA\Property(
+     *                  property="name",
+     *                  type="string",
+     *                  example="John Doe"
+     *              ),
+     *              @OA\Property(
+     *                  property="email",
+     *                  type="string",
+     *                  format="email",
+     *                  example="john.doe@example.com"
+     *              ),
+     *              @OA\Property(
+     *                  property="email_verified_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  nullable=true,
+     *                  example=null
+     *              ),
+     *              @OA\Property(
+     *                  property="created_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2024-07-24T15:53:32.000000Z"
+     *              ),
+     *              @OA\Property(
+     *                  property="updated_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2024-07-24T16:51:39.000000Z"
+     *              ),
+     *              @OA\Property(
+     *                  property="deleted_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  nullable=true,
+     *                  example=null
+     *              )
+     *          )
      *      ),
      *      @OA\Response(
      *          response=401,
@@ -204,7 +410,7 @@ class UserController extends Controller
     /**
      * Remove a specific user resource
      *
-     * @return User
+     * @return JsonResponse
      *
      * @OA\Delete(
      *      path="/users/{id}",
@@ -224,7 +430,6 @@ class UserController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/User")
      *      ),
      *      @OA\Response(
      *          response=401,
