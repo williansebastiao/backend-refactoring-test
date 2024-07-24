@@ -3,7 +3,7 @@ SHELL := /bin/bash
 DOCKER_COMPOSE := docker-compose
 COMPOSER := composer
 
-.PHONY: help start build stop container migrate seed composer key swagger
+.PHONY: help start build stop container migrate seed composer key swagger test
 
 help:
 	@echo "Eleven Makefile"
@@ -40,3 +40,6 @@ key: ## Enter the container and run key generate
 
 swagger: ## Enter the container and generate swagger
 	docker exec -it php-eleven php artisan l5-swagger:generate
+
+test: ## Enter the container and run test
+	docker exec -it php-eleven php artisan test
