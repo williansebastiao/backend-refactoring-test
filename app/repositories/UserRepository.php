@@ -4,6 +4,7 @@ namespace App\repositories;
 
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserRepository
 {
@@ -65,12 +66,13 @@ class UserRepository
      */
     public function destroy(int $id): bool
     {
-        try {
-            $this->user->find($id)->delete();
-            return true;
-        } catch (\Exception $e) {
-            return false;
+        $user = $this->user->find($id);
+        if (is_null($user)) {
+            throw new NotFoundHttpException('User not found');
         }
+        $user->delete();
+        return true;
+
     }
 
 }
