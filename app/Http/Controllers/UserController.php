@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Constants\StatusCode;
-use App\Http\Requests\Api\UserRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\User;
 use App\UseCases\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
