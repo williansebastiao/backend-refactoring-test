@@ -33,13 +33,29 @@ Ensure that docker is running on your local machine.
 3. Install and configure the project:
 
    ```bash
-   make install
+   make start
+   ```
+   
+   ```bash
+   make composer
+   ```
+
+   ```bash
+   make key
+   ```
+
+   ```bash
+   make migrate
+   ```
+
+   ```bash
+   make swagger
    ```
 
 4. Start the Docker containers:
 
    ```bash
-   make up
+   make stop
    ```
 
 The application will be accessible at `http://localhost:8000`.
@@ -50,13 +66,10 @@ The API is documented using Swagger. Ensure that your refactoring maintains or i
 
 ### Useful Makefile Targets
 
-- `make ps`: Show Docker container status.
-- `make down`: Stop and remove Docker containers.
-- `make forget`: Stop and remove Docker containers, volumes, and MySQL data.
-- `make api-shell`: Access the API container shell.
-- `make api-test`: Run PHPUnit tests.
-- `make api-test-feature`: Run PHPUnit tests for the Feature suite.
-- `make api-test-php-unit`: Run PHPUnit tests specifically.
+- `make stop`: Stop and remove Docker containers.
+- `make test`: Run PHPUnit tests.
+- `make swagger`: Generate a swagger doc.
+- `make`: Show all commands.
 
 ### Submission Guidelines
 
